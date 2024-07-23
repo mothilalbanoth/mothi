@@ -148,4 +148,5 @@ resource "aws_s3_bucket_object" "bucket_data" {
 
 }
  
+ git remote set-url origin https://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@github.com/mothilalbanoth/mothi.git
 
