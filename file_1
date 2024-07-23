@@ -1,9 +1,204 @@
-provider "aws" {
-  region = "us-west-2"
-}
+[6/24 2:30 PM] Prabhudasu Makkena
+hi
+ 
+[6/24 2:30 PM] Prabhudasu Makkena
+come for lunch
+ 
+[6/24 2:30 PM] Mothilal Banoth
+hi
+ 
+[7/2 2:06 PM] Prabhudasu Makkena
+Kubernetes for Beginners - A Complete Beginners Guide (Updated) (k21academy.com)
+ 
+[7/4 12:25 PM] Prabhudasu Makkena
+linux-lab-manual-feb_compress 3.pdf
+ 
+[7/4 2:03 PM] Mothilal Banoth
+Jenkins Pipeline Tutorial: How to Create JenkinsFile (Example) (guru99.com)
+Jenkins Pipeline Tutorial: How to Create JenkinsFile (Example)
+What is Jenkins Pipeline? In Jenkins, a pipeline is a group of events or jobs which are interlinked with one another in a sequence. In simple words, Jenkins Pipeline is a combination of plugins that s
+ 
+[7/5 2:06 PM] Mothilal Banoth
+Overview of Vantagex - Overview (azure.com)
+Wiki
+ 
+[7/5 3:32 PM] Prabhudasu Makkena
+UAT
+https://pepops.ite.mypepsico.com
+09432964
+Manali!12
+ 
+PEPOps
+ 
+[7/5 3:39 PM] Prabhudasu Makkena
+ITIL: Concepts, Processes, Benefits | Simplilearn
+ITIL: Concepts, Processes, Benefits
+Discover the power of ITIL! Dive into expert insights, elevate your IT prowess, and stand out in the competitive tech landscape. Continue reading to learn more!
+ 
+[7/9 2:17 PM] Mothilal Banoth
+hi
+ 
+[7/9 2:17 PM] Mothilal Banoth
+where are you
+ 
+[7/9 6:10 PM] Mothilal Banoth
+ 
+ 
+ 
+[7/9 6:11 PM] Mothilal Banoth
+ 
+ 
+ 
+[7/16 12:54 PM] Mothilal Banoth
+ANSIBLE:
 
-resource "aws_instance" "example" {
-  ami           = "ami-0c55b159cbfafe1f0"
-  instance_type = "t2.micro"
+Inventory file:
+ 
+all:
+
+  hosts:
+
+    web01-mothi:
+
+      ansible_host: 172.31.6.240
+ 
+    web02-mothi:
+
+      ansible_host: 172.31.14.33
+ 
+    db01-mothi:
+
+      ansible_host: 172.31.13.118
+ 
+ 
+  children:
+
+    webservers:
+
+      hosts:
+
+        web01-mothi:
+
+        web02-mothi:
+
+    dbservers:
+
+      hosts:
+
+        db01-mothi:
+
+    dc_oregon:
+
+      children:
+
+        webservers:
+
+        dbservers:
+
+      vars:
+
+        ansible_user: ec2-user
+
+        ansible_ssh_private_key_file: worker-key.pem
+ 
+ 
+playbook.yml
+ 
+---
+
+- name: Webserver setup
+
+  hosts: webservers
+
+  become: yes
+
+  tasks:
+
+    - name: install httpd
+
+      ansible.builtin.yum:
+
+        name: httpd
+
+        state: present
+ 
+    - name: Start Service
+
+      ansible.builtin.service:
+
+        name: httpd
+
+        state: started
+
+        enabled: yes
+ 
+- name: DBserver setup
+
+  hosts: dbservers
+
+  become: yes
+
+  tasks:
+
+    - name: Install postgres-server
+
+      ansible.builtin.yum:
+
+        name: postgresql-server
+
+        state: present
+ 
+    - name: Start Service
+
+      ansible.builtin.service:
+
+        name: postgresql-server
+
+        state: started
+
+        enabled: yes
+ 
+[Friday 12:24 PM] Prabhudasu Makkena
+ 
+[Yesterday 12:58 PM] Mothilal Banoth
+provider "aws" {
+
+  region = "ap-south-1"
+
 }
+ 
+variable "bucket_name" {
+
+  default = "mothi703"
+
+}
+ 
+variable "object_source" {
+
+  default = "./myfile.txt"
+
+}
+ 
+variable "object_key" {
+
+  default = "mydata.txt"
+
+}
+ 
+resource "aws_s3_bucket" "demo_bucket" {
+
+  bucket = var.bucket_name
+
+}
+ 
+resource "aws_s3_bucket_object" "bucket_data" {
+
+  bucket = aws_s3_bucket.demo_bucket.id
+
+  source = var.object_source
+
+  key    = var.object_key
+
+}
+ 
 
